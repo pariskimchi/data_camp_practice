@@ -1,0 +1,150 @@
+
+
+# What is a data pipeline?
+
+    => set of steps to process data form source 
+
+    1.input 
+        => csv, json, webservices, db 
+    2. transformation
+        => withColumn(), .filter(), .drop()
+    3. Output 
+        => csv, Parquet, database 
+    4. Validation 
+    5. Analysis
+
+# Pipeline details 
+
+    => Not formally defined in Spark 
+    
+    # syntax:
+    schema = StructType([
+        StructField('name', StringType(), False),
+        StructField('age', StringType(), False)
+    ])
+    df = spark.read.format('csv').load('datafile').schema(schema)
+    df = df.withColumn('id',monotonically_increasing_id())
+    ....
+    df.write.parquet('outdata.parquet')
+    df.write.json('outdata.json')
+
+# Practice: Quick pipeline 
+
+    # import the data to a DataFrame 
+    departures_df = spark.read.csv(
+        'data.csv.gz', header=True
+    )
+    # remove any duration of 0 
+    departures_df = departures_df.filter(
+        departures_df[3] >0
+    )
+    # add an ID column 
+    departures_df = departures_df.withColumn(
+        'id', F.monotonically_increasing_id()
+    )
+    # write the file out to JSON format 
+    departures_df.write.json(
+        'output.json', mode='overwrite'
+    )
+
+# change Type 
+    
+    departures_df = departures_df.withColumn(
+        'Duration', departures_df['Duration'].cast(IntegerType())
+    )
+    
+    => .cast(IntegerType()) 이용 
+
+
+# Data handling techniques 
+
+    # what are we trying to parse?
+
+    
+    # Removing blank lines, header and comments 
+
+    df1 = spark.read.csv('datafile.csv.gz', comment='#')
+
+    df1 = spark.read.csv('datafile.csv.gz', header='True')
+
+    # Automatic column creation 
+    df1 = spark.read.csv('datafile.csv.gz', sep=',')
+
+
+# practice : Removing commented lines 
+
+    # import the file to a dataframe  
+    annotations_df = spark.read.csv(
+        'annotations.csv.gz', sep='|'
+    )
+    full_count = annotations_df.count()
+
+    # count the number of rows beginning with '#'
+    comment_count = annotations_df.where(
+        col('_c0').startswith('#')
+    ).count()
+
+        => .where, .startswith()
+
+    # import the file to new dataframe 
+    no_comments_df = spark.read.csv(
+        'annotations.csv.gz', sep='|', comment='#'
+    )
+
+# practice : Removing invalid rows 
+
+    # split _c0 on the tab character and store the list in a variable 
+    temp_fields = F.split(annotations_df['_c0'],'\t')
+
+    # create the colcount column on the dataframe 
+    annotations_df = annotations_df.withColumn(
+        'colcount', F.size(temp_fields)
+    )
+
+    # remove any rows containing fewer than 5 fields 
+    annotations_df_filtered = annotations_df.filter(
+        ~(annotations_df['colcount'] < 5)
+    )
+
+
+# practice : Splitting into columns 
+
+    # split the content of _c0 on the tab character 
+    split_cols = F.split(annotations_df["_c0"], '\t')
+
+    # Add the columns folder, filename, width and height 
+    split_df = annotations_df.withColumn('folder', split_cols.getItem(0))    
+    split_df = split_df.withColumn('filename', split_cols.getItem(1))
+    split_df = split_df.withColumn('width',split_cols.getItem(2))
+    split_df = split_df.withColumn('height', split_cols.getItem(3))
+
+
+
+# Practice : Further parsing 
+
+    udf 이용 
+
+    def retriever(cols, colcount):
+        # return a list of dog data 
+        return cols[4:colcount]
+
+    # Define the method as a UDF 
+    udfRetriever = F.udf(retriever, ArrayType(StringType()))
+
+    # create a new column using your UDF 
+    split_df = split_df.withColumn(
+        'dog_list', 
+        udfRetriever(split_df.split_cols, split_df.colcount)
+    )
+
+    # Remove the original column, split_cols, colcount 
+    split_df = split_df.drop('_c0').drop('split_cols').drop('colcount')
+
+
+# Validating via joins 
+
+    parsed_df= spark.read.parquet('parsed_data.parquet')
+    company_df = spark.read.parquet('companies.parquet')
+    verified_df = parsed_df.join(company_df, parsed_df.company == company_df.company)
+
+    

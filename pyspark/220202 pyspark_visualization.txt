@@ -1,0 +1,35 @@
+
+
+# Data visualization using 
+    Pyspark_dist_explore 
+
+
+    => 1. hist()
+    => 2. distplot()
+    => 3. pandas_histogram()
+
+    test_df = spark.read.csv(
+        'test.csv',header=True, inferSchema=True
+    )
+    test_df_age = test_df.select('Age')
+
+    hist(test_df_age, bins=20, color='red')
+
+    # using pandas plot 
+    
+    test_df = spark.read.csv(
+        "test.csv", header=True, inferSchema=True
+    )
+    test_df_sample_pandas = test_df.toPandas()
+
+    test_df_sample_pandas.hist('Age')
+
+    # HandySpark method 
+
+    test_df = spark.read.csv(
+        'test.csv', header=True, inferSchema=True
+    )
+
+    hdf = test_df.toHandy()
+
+    hdf.cols["Age"].hist()

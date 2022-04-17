@@ -1,0 +1,241 @@
+
+
+
+# Object-oriendted programming 
+
+    => code as interactions of objects 
+    ==> maintainable and reusable code 
+
+
+# Object = attributes + methods 
+    
+    attribute => variable s=> obj.my_attribute 
+    method => function() => obj.my_method()
+
+
+# Practice 
+
+    #Include 
+    
+    class Employee:
+         
+        def set_name(self, new_name):
+            self.name = new_name 
+
+    # create an object emp of class Employee 
+    emp = Employee()
+
+    # use set_name() on emp to set the name of emp 
+
+
+# Instance-level data 
+
+class Employee:
+
+    # Define a class attirbute
+    MIN_SALARY = 30000
+
+    def __init__(self, name, salary);
+        self.name= name 
+        
+        if salary >= Employee.MIN_SALARY:
+            self.salary = salary 
+        else:
+            self.salary = Employee.MIN_SALARY
+emp1 = Employee("hanule",1111111)
+emp2 = employee('haneul',22222)
+
+name, salary = > instance attributes 
+self => bind to an instance 
+
+
+
+class MyClass:
+
+    @classmethod   => decorator to declare class method 
+    def my_awesome_method(cls, args):
+
+
+# Alternative constructor 
+
+class Employee:
+    MIN_SALARY = 30000
+
+    def __init__(self, name, salary=30000):
+        self.name = name 
+        if salary >= Employee.MIN_SALARY:
+            self.salary = salary 
+        else:
+            self.salary = Employee.MIN_SALARY
+
+    @classmethod
+    def from_file(cls, filename):
+        with open(filename, "r") as f:
+            name = f.readline()
+        return cls(name)
+
+
+# Inheritance (상속)
+
+
+# Implementing class inheritance 
+
+class BankAccount:
+    def __init__(self, balance):
+        self.balance = balance 
+    
+    def withdraw(self, amount):
+        self.balance -= amount 
+
+# Empty class inherited from BankAccount 
+class SavingAccount(BankAccount):
+    pass 
+    
+    => Saving account => child class 
+            => can use all method of parent(BankAccount)
+
+# SavingAccount is a BankAccount 
+
+    # isinstance 로 확인 가능 
+
+    savings_acct = SavingsAccount(1000)
+    isinstance(savings_acct, SavingsAccount)
+        => True 
+    
+    isinstance(savings_acct, BankAccount)
+        => True
+
+
+# customizing functionality via inheritance 
+
+
+    class BankAccount:
+        def __init__(self, balance):
+            self.balance = balance 
+
+        def withdraw(self, amount):
+            self.balance -= amount
+
+    class SavingsAccount(BankAccount):
+        
+        # constructor 
+        def __init__(self, balance, interest_rate):
+
+            # call the parent constructor 
+            BankAccount.__init__(self, balance)
+
+            # Add more functionality 
+            self.interest_rate = interest_rate
+
+# example customizing 
+
+class CheckingAccount(BankAccount):
+    def __init__(self, balance, limit):
+        BankAccount.__init__(self, content):
+        self.limit = limit 
+    
+    def deposit(self, amount):
+        self.balance += amount 
+    
+    def withdraw(self, amount, fee= 0):
+
+        if fee <= self.limit:
+            BankAccount.withdraw(self, amount - fee)
+        else:
+            BankAccount.withdraw(self, amount - self.limit)
+
+
+# practice 
+    => customizing dataframe 
+
+    import pandas as pd 
+
+    class LoggedDf(pd.DataFrame):
+        def __init__(self, *args, **kwargs):
+            pd.DataFrame.__init__(self, *args,**kwargs)
+            self.created_at = datetime.today()
+
+        def to_csv(self, *args, **kwargs):
+            # copy self to a temporary dataFrame 
+            temp = self.copy()
+
+            # create a new column filled with self.create_at 
+            temp["created_at"] = self.created_at 
+
+            # call pd.Dataframe 
+            pd.DataFrame.to_csv(temp, *args, **kwargs)
+
+
+# Object equality 
+
+    class Customer:
+        
+        def __init__(self, name, balance, id):
+            self.name, self.balance = name, balance 
+            self.id = id 
+
+    customer1 = Customer('a1',1,1)
+    customer2 = Customer('a1',1,1)
+    
+    customer1 == customer2 
+        => False 
+        => 왜냐면 id 추가 되어서 서로 다르다 
+
+
+# overloading __eq__()
+
+    class Customer:
+        def __init__(self, id, name):
+            self.id, self.name = id, name 
+        
+        def __eq__(self, other):
+
+            return (self.id == other.id) and \
+                (self.name == other.name) and \
+                (type(self) == type(other))
+
+# other comparison operators 
+
+    == 
+        => __eq__()
+    != 
+        => __ne__()
+    >=
+        => __ge__()
+    <=
+        => __le__()
+    > 
+        => __gt__()
+    <
+        => __lt__()
+
+    __hash__()
+        => use object as dict 
+
+# implementation: str 
+
+    class Customer:
+        def __init__(self, name, balance):
+            self. name, self.balance = name, balance 
+
+        def __str__(self): print()
+            cust_str = """
+            Customer:
+                name: {name}
+                balance: {balance}
+
+            """.format(name = self.name,\
+                balance = self.balance)
+            return cust_str
+
+        def __repr__(self): => print in console
+
+            
+            return "Customer('{name}',{balance})".format(
+                name = self.name, balance = self.balance
+            )
+    
+    cust = Customer("a1",3000)
+    cust
+
+    

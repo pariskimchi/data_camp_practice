@@ -1,0 +1,26 @@
+
+
+Step of Data engineering 
+
+1. Ingest 
+2. Process 
+3. Store
+4. Need Pipelines 
+5. Automate flow from one station to the next
+6. provide up-to-date, accurate, relevant data
+
+
+Data pipelines flow 
+
+
+Automate 
+1.Extract 
+2. transform 
+3. combine 
+4. validate 
+5. load 
+
+Reduce 
+1. Human intervetion 
+2. errors 
+3. time it takes data to flow

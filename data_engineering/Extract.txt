@@ -1,0 +1,91 @@
+
+Extracting data:  what does it mean??
+
+
+Extracting from text files 
+
+Unstructed 
+- plain text 
+- chapter from a book 
+
+Flat files 
+- Row = record 
+- Column = attribute
+- E.g. .tsv or .csv
+
+JSON
+
+- JavaScript Object Notation
+- semi-sturctured
+-Atomic 
+    - number 
+    - string 
+    - boolean 
+    - null
+- Composite 
+    - array 
+    - object
+
+Example 
+
+import json 
+result = json.loads(
+    '{"key_1":"value_1",
+        "key_2":"value_2"}')
+
+print(result["key_1"])
+
+Data on the web 
+
+Requests
+    => 1. request Page
+    => 2. response with data
+
+example 
+1. browse to google 
+2. request to google server 
+3. google responds with web page
+
+Data on the web through APIs
+    => send data in JSON format 
+    => API: application programming interface
+    => Examples
+        - twitter API
+    json 파일로 전달된다 
+
+import requests 
+
+url = ""
+response = requests.get(url) 
+print(response.json())
+
+
+
+Data in database 
+
+Application database 
+
+-Transactions 
+-Inserts or changes 
+- OLTP
+- Row-oriented 
+
+Analytical database 
+-OLAP
+-Column-oriented
+
+Extraction From database 
+
+#connection string/URI
+
+# 리스트안에건 다 붙여서 연결 
+# 여기서는 쉽게 이해를 위해 구분
+postgresql://[user[:password]@[host][:port]]
+
+import sqlalchemy
+
+connection_uri = "postgresql://user:password@localhost:5432/pagila"
+db_engine = sqlalchemy.create_engine(connection_uri)
+
+import pandas as pd 
+pd.read_sql("SELECT * FROM customer",db_engine)

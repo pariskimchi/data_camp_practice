@@ -1,0 +1,64 @@
+
+
+# Shell commands refresher 
+
+-grep
+-cat
+-tail 
+-wc 
+-sed
+
+# practice 
+grep 'p' fruits.txt
+
+
+
+cat two_cities.txt | egrep 'Sydney Carton|Charles Darnay' | wc -l
+
+
+sed 's/찾을텍스트/바꿀텍스트/' 파일명
+
+
+# STDIN-STDOUT-STDERR
+
+1. STDIN(standard input): a stream of data into the program 
+
+2. STDOUT(standard output): a stream of data out of the program 
+
+3. STDERR(standard error): Errors in your program 
+
+
+# example 
+
+cat sports.txt 1 > new_sports.txt
+
+    => taking data from the file 
+        and writing STDOUT to a new file.
+
+
+# STDIN vs ARGV
+
+- ARGV => array of all the arguments given to the program 
+- Each argument can be accessed via the $ 
+    => $1 => 1st argument 
+    => $2 => 2nd argument 
+- $@ and $*
+- $# give the length of arguement 
+
+ 
+# Missing the $ notation 
+
+# if missing $ notation - it isn't a variable ! 
+
+firstname = 'Cynthia'
+lastname = 'Liu'
+echo "hi there " firstname lastname 
+
+# 중요한 차이 
+# 더블스트링 (") 이랑 싱글 스트링 (') 차이 
+
+싱글스트링 ('') 안에서는 
+변수불러오기 
+'$var'가 실질적으로 적용 안되고 
+
+"$var" 만 적용이 된다 

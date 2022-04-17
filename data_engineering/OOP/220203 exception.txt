@@ -1,0 +1,71 @@
+
+
+try - except- finally:
+
+    try:
+        # try running some code 
+    except ExceptionNameHere:
+        # if ExceptionNameHERe happens 
+    
+    fin
+
+
+# example 
+
+    def make_list_of_ones(length):
+        if length <= 0 :
+            raise ValueError("Invalid length!")
+        return [1]*length 
+
+     
+# Inherit from Exception 
+
+    # example 2
+    class BalanceError(Exception):
+    
+
+    class Customer:
+        def __init__(self, name, balance):
+            if balance <0 :
+                raise BalanceError("ba)
+            else:
+                self.name, self.balance = name, balance 
+    
+
+    try:
+        cust = Customer("a1",-100)
+    except BalanceError:
+        cust = Customer("a1",0)
+
+# practice3 
+
+def invert_at_index(x,ind):
+
+    try:
+        return 1/x[ind]
+    except ZeroDivisionError:
+        print(")
+    except IndexError:
+        print(")
+
+# practice 4 
+
+    class SalaryError(ValueError):
+        pass 
+    class BonusError(SalaryError):
+        pass
+    
+    class Employee:
+        MIN_SALARY:30000 
+        MAX_BONUS = 5000
+
+        def __init__(self, name, salary = 30000):
+            self.name = name 
+            if salary < Employee.MIN_SALARY:
+                raise SalaryError
+            self.salary = salary 
+        
+        def give_bonus(self, amonut):
+            if amount > Employee.MAX_BONUS:
+                raise BonusError 
+            

@@ -1,0 +1,153 @@
+
+# load local file into pyspark shell 
+
+lines = sc.textfile(file_path)
+
+
+# filter 
+
+    => spark.map()
+    => spark.filter()
+
+    # lambda function syntax:
+
+        # lambda arguments: expression
+
+    # example:
+    double = lambda x: x*2
+    
+
+# use of lambda function in python - map()
+
+    #syntax:
+    map(function, list)
+
+    # example of map()
+    items = [1,2,3,4]
+    list(map(lambda x:x+2, items))
+
+# use of lambda function in python - filter()
+
+    # syntax:
+    filter(function, list)
+
+    # example
+    items = [1,2,3,4]
+
+# practice2 
+    squared_list_lambda = list(map(lambda x:x**2, my_list))
+
+
+# Rdd?
+
+    # resilient distributed Dataset (RDD)
+    
+    - Resilient : ability to withstand failure 
+    - Distributed : Spanning across multiple machines 
+    - dataset: collection of partitioned data  
+        eg. array, tables, tuples 
+
+# parallelize() 
+    => for creating RDD's from python lists 
+
+    numRDD = sc.parallelize([1,2,3,4])
+
+    helloRDD = sc.parallelize("hello world")
+
+
+# From external datasets 
+    => textFile() => for creating RDDs from external datset 
+
+    fileRDD = sc.textFile("README.md")
+
+# Partitioning in pyspark 
+
+    # parallelize() method 
+    numRDD = sc.parallelize(range(10), minPartitions=6)
+
+    # textFile() method 
+    fileRDD = sc.textFile("README.md", minPartitions=6)
+
+# to get partitions 
+    => numRDD.getNumPartitions()
+
+
+# RDD transformations 
+
+    1. Storage 
+        => RDD created by reading data 
+            from stable storage 
+    2. RDD 1
+        => transformations 
+    3. RDD 2 
+        => transformations
+    4. RDD 3 
+        => action 
+    5. result
+
+    # Basic RDD transformations
+        => map(), filter(), flatMap(), union()
+
+# map() transformations
+
+    RDD = sc.parallelize([1,2,3,4])
+    RDD_map = RDD.map(lambda x:x**x)
+
+# filter() transformations
+    RDD = sc.parallelize(p1,2,3,4)
+    RDD_filter = RDd.filter(lambda x:x >2)
+
+# flatMap() transformations
+
+    RDD = sc.parallelize(["hello world","how are you?"])
+    RDD_flatmap = RDD.flatMap(lambda x:x.split(" "))
+
+# union() transformations
+
+    inputRDD = sc.TextFile("logs.txt")
+    
+    errorRDD = inputRDD.filter(lambda x: "error" in x.split())
+    warningsRDD = inputRDD.filter(lambda x: "warnings" in x.split())
+
+    combinedRDD = errorRDD.union(warningsRDD)
+
+# collect() , take() => Actions 
+
+    # collect()
+        => return all the elements of array 
+    
+    # take() 
+        => return an array with first N element of dataset 
+
+    # ex 
+    RDD_map.collect()
+
+    RDD_map.take(2)
+
+# first() , count() Actions 
+
+    # first() 
+        => print the first element of RDd
+    
+    RDD_map.first()
+    
+    # count()
+        => return the number of elemetn 
+    RDD_flatmap.count()
+
+# practice 
+
+# filter the fileRDD to select lines with spark keyword 
+
+fileRDD_filter = fileRDD.filter(
+    lambda line: "Spark" in line.split()
+)
+
+# How many lines are there in fileRDD?
+print("the total number of lines with , fileRDD_filter.count())
+
+# print the first 4 lines of fileRDD
+for line in fileRDD_filter.take(4):
+    print(line)
+
+

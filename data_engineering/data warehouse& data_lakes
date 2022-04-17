@@ -1,0 +1,39 @@
+
+
+Data lake 
+
+1. Store all the raw data 
+2. petabyte(1million GB)
+3. store all data structure 
+4. cost-effective 
+5. difficult to analyze 
+6. requires an up-to-date data catalog 
+7. used by data scientist 
+8. bigdata, real-time analyticcs
+
+
+
+Data Warehouse 
+
+1. specific data for specific use 
+2. relatively small 
+3. stores mainly structured data 
+4. more costly to update 
+5. opimized for data analysis 
+6. used by data analysts
+7. ad-hoc, read-only queries
+
+
+Data catalog for data lakes 
+
+    =>
+    1. what is the source of this data?
+    2. where is this data used?
+    3. who is the owner of the data?
+    4. how often is this data updated?
+    5. good practice in terms of data governance 
+        1.reliability 
+        2. autonomy 
+        3. scalability 
+        4. speed
+    6. ensure reproducibility

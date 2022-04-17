@@ -1,0 +1,40 @@
+
+Data processing Value 
+
+    => 
+        1. Remove unwanted data 
+        2. Optimize memory, 
+            process and network costs 
+        3. Convert data from one type to another
+        4. Organize data
+        5. To fit into a schema/structure
+        6. Increase productivity
+
+
+    At Spotflix 
+
+    => No long term need for testing feature data
+    => Can't afford to store and stream files this big
+    => conver songs from .flac to => .ogg
+
+    => Reorganize data from the data lake to Warehouse
+    => Employee table example
+    => Enable data scientist
+
+
+How data engineers process data 
+
+
+1. Data manipulation, cleaning , tidying task 
+
+    => automate, always need to be done 
+    => reject corrupt song files 
+    => deciding what happens with missing metadata 
+    => separate artists and albums tables 
+    => provide view combine 
+    => indexing
+
+
+2. Store data in structured database 
+3. create views on top of database table 
+4. optimizing the performance of the database 

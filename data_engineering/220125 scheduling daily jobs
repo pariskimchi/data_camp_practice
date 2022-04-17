@@ -1,0 +1,76 @@
+
+previous steps 
+
+
+1. Extract using "extract_course_data()"
+    and "extract_rating_data()"
+2. Clean up using NA using "transform_fill_programming_language"
+3. Average course ratings per course:
+    => "transform_avg_rating()"
+4. get eligible user and course id pairs:
+    transform_courses_to_recommend()
+5. calculate the recommendations:
+    transform_recommendations()
+
+
+Loading to Postgres 
+
+1. Use the calculation in data products 
+2. Update daily 
+3. Exmpale use case:
+    sending out e-mails with recommendations
+
+recommendations.to_sql(
+    "recommendations",
+    db_engine,
+    if_exists="append",
+)
+
+ETl function =>
+    1. Extract the data 
+    2. clean data 
+    3. get avg course rating 
+    4. get eligible user and course id pairs 
+    5. calculate the recommendation 
+    6. load the recommendations into the database 
+
+
+def etl(db_engines):
+    # 1. extract the data 
+    courses = extract_course_data(db_engines)
+    rating = extract_rating_data(db_engines)
+
+    # 2. clean_up courses
+    courses = transform_fill_programming_language(courses)
+
+    # 3. get avg course rating 
+    avg_course_rating = transform_avg_rating(rating)
+
+    # 4. get eligible user and course id pairs 
+    courses_to_recommend = transform_courses_to_recommend(
+        rating, 
+        courses,
+    )
+
+    # 5. calculate the recommendation 
+    recommendations = transform_recommendations(
+        avg_course_rating,
+        courses_to_recommend,
+    )
+
+    # 6. Load the recommendations into the database 
+    load_to_dwh(recommendations, db_engine)
+
+
+# Creating the DAG 
+
+from airflow.models import DAG
+from airflow.operators.python_operator import PythonOperator 
+
+dag = DAG(dag_id = "recommendations",
+            scehduled_interval = "0 0 * * *")
+
+task_recommendations = PythonOperator(
+    task_id="recommendations_task",
+    python_callable=etl,
+)

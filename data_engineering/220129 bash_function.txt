@@ -1,0 +1,50 @@
+
+
+why function?
+
+1. function are reusable 
+2. allow modular code 
+3. functions aid sharing code
+
+# syntax:
+
+function_name () {
+    #function_code 
+    return # something
+}
+
+# example1 
+
+function print_hello() {
+    echo "hello world!"
+}
+
+print_hello # call the function
+
+# example 2 
+
+temp_f =30 
+
+function convert_temp() {
+    temp_c = $(echo "scale=2; ($temp_f - 32)*5 / 9" | bc)
+    echo $temp_c
+}
+
+convert_temp # call the function
+
+
+# practice 1 
+
+# create function 
+
+function upload_to_cloud() {
+    # loop through files with glob expansion
+    for file in output_dir/*results*
+    do
+        # echo that they 
+        echo "uploading $file to cloud"
+    done
+
+}
+
+upload_to_cloud # call the function

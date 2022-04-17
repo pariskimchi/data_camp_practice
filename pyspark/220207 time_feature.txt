@@ -1,0 +1,178 @@
+
+
+# Treating Date Fields as Dates 
+
+
+    from pyspark.sql.functions import to_date 
+    
+    # Cast the data type to Date 
+    df = df.withColumn('LISTDATE', to_date('LISTDATE'))
+
+    # Inspect the field 
+    df[['LISTDATE']].show(2)
+
+    # Time Components 
+
+    from pyspark.sql.functions import year, month 
+
+    # create a new column of year number 
+    df = df.withColumn('LIST_YEAR',year('LISTDATE'))    
+
+    # create a new column of month number 
+    df = df.withColumn('LIST_MONTH',month('LISTDATe'))
+
+    from pyspark.sql.functions import dayofmonth, weekofyear 
+
+    # create new column of the day number within the mon
+    df = df.withColumn('LIST_DAYOFMONTH',dayofmonth('LISTDATE'))
+
+    # create new columns of the week number within the year 
+    df = df.withColumn('LIST_WEEKOFYEAR', weekofyear('LISTDATE'))
+
+# Basic Time Based Metrics 
+
+    from pyspark.sql.functions import datediff 
+
+    # Calculate difference between two date fields 
+    df.withColumn('DAYSONMARKET',datediff('OFFMARKETDATE','LISTDATE'))
+
+# Logging Features 
+
+    .window()
+    => returns a record based off a group of record 
+
+    lag(col, count=1)
+    => return the value 
+
+    from pyspark.sql.functions import lag 
+    from pyspark.sql.window import Window 
+
+    # create Window 
+    w = Window().orderBy(m_df['DATE'])
+
+    # create lagged column  
+    m_df = m_df.withColumn('MORGAGE-1wk', lag('MORTGAGE', count=1).over(w))
+
+    # Inspect results 
+    m_df.show(3)
+
+
+# Time Components
+
+    => 시간 타입 바꾸기 
+
+    # import needed functions 
+    from pyspark.sql.functions import to_date, dayofweek 
+
+    # convert to date type 
+    df = df.withColumn('LISTDATE', to_date('LISTDATE'))
+
+    # Get the day of the week 
+    df = df.withColumn('List_Day_of_Week',dayofweek('LISTDATE'))
+
+    # Sample and convert to pandas dataframe 
+    sample_df = df.sample(False, 0.5, 42).toPandas()
+
+    # Plot count plot of day of week 
+    sns.countplot(x='LIST_Day_of_Week',data = sample_df)
+    plt.show()
+
+
+# Joining on Time components 
+
+    from pyspark.sql.functions import yera 
+
+    # Initialize dataframes 
+    df = real_estate_df 
+    price_df = median_prices_df
+
+    # create year column 
+    df = df.withColumn('list_year',year('LISTDATE'))
+
+    # adjust year to match
+    df = df.withColumn('report_yera',(df['list_year']-1))
+
+    # create join condition 
+    condition = [df['CITY']==price_df['City'],
+                df['report_year']==price_df['Year']]
+
+    # join the dataframe together 
+    df = df.join(
+        price_df, on=condition, how='left'
+    )
+
+# Date Math 
+    
+    from pyspark.sql.functions import lag, datediff, to_date 
+    from pyspark.sql.window import Window 
+
+    # Cast data type 
+    mort_df = mort_df.withColumn(
+        'DATE', to_date('DATE')
+    )
+    # create window 
+    w = Window().orderBy(mort_df['DATE'])
+    # create lag column 
+    mort_df = mort_df.withColumn(
+        'DATE-1', lag('DATE',count=1).over(w)
+    )
+
+    # calculate difference between date columns 
+    mort_df = mort_df.withColumn(
+        'Days_Between_Report', datediff('DATE','DATE-1')
+    )
+
+    # print results 
+    mort_df.select('Days_Between_Report').distinct().show()
+
+
+# Extracting Features 
+
+    #syntax
+    from pyspark.sql.functions import when 
+
+    # Create boolean filters 
+    find_under_8 = df['ROOF'].like('%AGe 8 years or Less%')
+    find_over_8 = df['ROOF'].like('%Age Over 8 Years%')
+
+    # Apply filters using when() and otherwise()
+    df = df.withColumn(
+        'old_roof',
+        (when(find_over_8,1)
+        .when(find_under_8,0)
+        .otherwise(None))
+    )
+    # Inspect results 
+    df[['ROOF','old_roof']].show(3, truncate=100)
+
+    # Splitting columns 
+
+    from pyspark.sql.functions import split 
+
+    # split the column on commas into a list 
+    split_col = split(df['ROOF'],',')
+
+    # put the first value of the list into a new column 
+    df = df.withColumn('Roof_Material', split_col.getItem(0))
+
+    # Inspect results 
+
+# Explode & Pivot 
+
+    from pyspark.sql.functions import split, explode, lit, coalesce, first 
+
+    # split the column on commas into a list 
+    df = df.withColumn(
+        'roof_list', split(df['ROOF'], ',')
+    )
+    # explode list into new records for each value 
+    ex_df = df.withColumn(
+        'ex_roof_list', explode(df['roof_list'])
+    )
+
+    # Create a dummy column of constant value 
+    ex_df = ex_df.withColumn('constant_val', lit(1))
+
+    # pivot the value sinto boolean columns 
+    piv_df = ex_df.groupBy('NO').pivot('ex_roof_list')
+            .agg(coalesce(first('constant_val')))

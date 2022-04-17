@@ -1,0 +1,132 @@
+what is csvkit??
+
+
+=> a suite of command-line tools 
+=> developped in python 
+
+=> offers data processing and cleaning on CSV files 
+
+=> Python, R , SQL 
+
+# How to install??
+
+pip install csvkit
+
+# how to upgrade?
+
+pip install --upgrade csvkit
+
+# in2csv: converting files to CSV 
+
+in2csv --help
+in2csv -h 
+
+
+# Syntax 
+
+in2csv SpotifyData.xlsx > SpotifyData.csv 
+
+# print the first sheet in Excel , not save
+in2csv SpotifyData.xlsx
+
+# > redirects the output and save 
+> SpotifyData.csv
+
+# --names, -n option to print all sheet names in SpotifyData.xlsx
+
+in2csv -n SpotifyData.xlsx
+
+# --sheet option => convert specific sheet to csv 
+
+in2csv SpotifyData.xlsx --sheet "Worksheet1_Popularity"> Spotify_popularity.csv
+
+
+# csvlook: data preview on the command line 
+
+csvlook: renders a csv to the command line in markdown 
+
+#documentation 
+csvlook -h
+
+# Syntax 
+csvlook Spotify_popularity.csv
+
+
+# csvstat: descriptive stats on csv files 
+
+csvstat -h
+
+# syntax 
+
+csvstat Spotify_popularity.csv
+
+
+# Filtering data using csvkit
+
+# filter data??
+
+    => 1. filtering the data by column 
+    => 2. filtering the data by row 
+    
+    csvcut: filter data using column name or position 
+    csvgrep: filter data by row value 
+
+
+# csvcut: filtering data by column
+
+csvcut -n Spotify_popularity.csv
+
+# return the first column 
+
+csvcut -c 1 Spotify_popularity.csv
+
+# return only the first column by name 
+csvcut -c "track_id" Spotify_popularity.csv
+
+# return 2, 3 column by position 
+
+csvcut -c 2,3 Spotify_popularity.csv
+
+csvcut -c "danceability","duration-ms" Spotify_popularity.csv
+
+
+# csvgrep: filtering by row value
+
+-m : followed by the exact row value to filter 
+
+-r  : followed with a regex pattern 
+
+-f: followed by the path to a file 
+
+
+# find in csv where track_id = 5pc 
+
+csvgrep -c "track_id" -m 5pc Spotify_popularity.csv
+
+
+# csvstack: stacking multiple csv files 
+
+csvstack => stack up the rows from two or more csv files 
+
+# preview csv files 
+csvlook Spotify_rank7.csv
+
+# syntax
+csvstack Spotify_rank6.csv Spotify_rank7.csv > Spotify_allrank.csv
+
+# preview 
+csvlook Spotify_allrank.csv
+
+-g: make a Group 
+
+csvstack -g "Rank6","Rank7"\
+Spotify_Rank6.csv Spotify_Rank7.csv > Spotify_allrank.csv
+
+# naming the group 
+
+-n: naming the group
+
+csvstack -g "Rank6","Rank7" -n "source"\
+Spotify_Rank6.csv Spotify_Rank7.csv > Spotify_allrank.csv
+
+

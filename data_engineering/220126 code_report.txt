@@ -1,0 +1,53 @@
+
+
+calculate runtime with IPython 
+    => %timeit
+
+    ==> %%timeit
+
+    ==> saving output 
+        => -o
+
+
+Comparing times 
+
+%timeit -o formal_dict = dict()
+
+%timeit -o literal_dict = {}
+
+
+# how to calculate the runtime variable??
+
+%load_ext line_profiler line_profiler 
+
+%lprun -f convert_units convert_units(heroes, hts, wts)s
+
+# Quick and dirty approach 
+
+
+import sys 
+
+num_list = [*range(1000)]
+sys.getsizeof(nums_list)
+
+import numpy as np
+
+nums_np = np.array(range(1000))
+sys.getsizeof(nums_np)
+
+# code profiling: memory 
+pip install memory_profiler
+
+# how to use?
+%load_ext memory_profiler
+
+%mprun -f convert_units convert_units(heroes, hts, wts)
+
+
+hero_funcs.py 에서
+
+from hero_funcs import convert_units 
+
+%load_ext memory_profiler
+
+%mprun -f convert_units convert_units(heroes, hts, wts)

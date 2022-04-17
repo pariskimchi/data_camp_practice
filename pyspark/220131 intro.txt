@@ -1,0 +1,227 @@
+
+
+
+# connection 
+
+    => creating instance of SparkContext class 
+
+        => SparkConf() 
+
+        SparkContext => sc
+
+# Using DataFrames 
+
+spark's core data structure => RDD
+                            => Resilient Distributed 
+                                Dataset 
+                        
+
+
+# step 
+    1. create SparkSession object from SparkContext 
+
+    2.SparkSession => spark 
+
+    - SparkContext => connection 
+    - SparkSession => interface
+
+# example 
+
+# import SparkSession from pyspark.sql 
+from pyspark.sql import SparkSession 
+
+# create my_spark 
+my_spark = SparkSession.builder.getOrCreate()
+
+# print my_spark 
+print(my_spark)
+
+# viewing Tables 
+
+SparkSession => catalog(attribute)
+
+    => spark.catalog.listTables()
+
+# Run the query 
+
+    #query 
+    query = "FROM flights SELECT * LIMIT 10"
+
+    # get the first 10 row of flights 
+    flights10 = spark.sql(query)
+
+    # show the result 
+    flights10.show()
+
+# convert to pandas 
+
+    # query = "..."
+
+    # run the query 
+    flights_count = spark.sql(query)
+
+    # Convert the result to pd DataFrames
+    pd_counts = flight_counts.toPandas()
+
+    # print 
+    print(pd_counts.head())
+
+# practice 
+
+    # create pd_temp 
+    pd_temp = pd.DataFrame(np.random.random(10))
+
+    # Create spark_temp from pd_temp
+    spark_temp = spark.createDataFrame(pd_temp)
+
+    # Examine the table in the catalog 
+    print(spark.catalog.listTables())
+
+    # add spark_temp to the catalog 
+    spark_temp.createOrReplaceTempView("temp")
+
+    # Examine the tables in the catalog again 
+    print(spark.catalog.listTables())
+
+# Dropping 
+
+    file_path="..."
+
+    # read in the airport data 
+    airports =spark.read.csv(file_path, header=True)
+
+    # show the data 
+    airports.show()
+
+# creating columns 
+
+    # create dataframe flights 
+    flights = spark.table("flights")
+
+    # show the head 
+    flights.show()
+
+    # Add duration_hrs column 
+    flights = flights.withColumn(
+        "duration_hrs",flights.air_time/60
+    )
+
+
+# filtering data 
+    => spark.filter()
+
+    #example
+    => filghts.filter("air_time>120").show()
+    => flights.filter(flights.air_time > 120).show()
+
+
+# selecting data
+
+    => spark.select()
+    => spark.withColumn()
+
+    #practice
+
+    # select 
+    selected1 = flights.select("tailnum","origin","dest")
+
+    # select2 
+    temp = flights.select(flights.origin,flights.dest, flights.carrier)
+
+    # define first filter 
+    filterA = flights.origin == "SEA"
+
+    # define second filter 
+    filterB = flights.dest == "PDX"
+
+    # filter the data, 
+    selected2 = temp.filter(filterA).filter(filterB)
+
+
+# selecting 2 
+    => spark.alias()
+
+    # creating new col 
+    flights.select((flights.air_time/60).alias("duration_hrs"))
+
+    flights.selectExpr("air_time/60 as duration_hrs")
+
+
+# example 
+avg_speed = (flights.distance/(flights.air_time/60)).alias("avg_speed")
+
+# select col 
+spseed1 = flights.select("origin","dest","tailnum",avg_speed)
+
+# create the sam table using a sql expression
+speed2 = flights.selectExpr("origin","dest","tailnum","distance/(air_time/60) as avg_speed)
+
+
+# aggregating 
+    
+    => spark.min()
+    => spark.max()
+    => spark.count()
+    => spark.avg()
+
+
+    df.groupBy().min("col").show()
+
+    #practice 
+    flights.filter(flights.origin == "PDX").groupBy().min("distance").show()
+
+    flights.filter(flights.origin == "SEA").groupBy().max("air_time").show()
+
+# aggregating 2
+
+# average duration of delta flights 
+flights.filter(flights.carrier == "DL").filter(
+    flights.origin == "SEA"
+).groupBy().avg("air_time").show()
+
+# total hours in the air 
+flights.withColumn("duration_hrs",flights.air_time/60)
+.groupBy().sum("duration_hrs").show()
+
+# Grouping and Aggregating 1
+
+    # group by tailnum
+    by_plane = flights.groupBy("tailnum")
+
+    # number of flights each plane made 
+    by_plane.count().show()
+
+    # group by origin 
+    by_origin = flights.groupBy("origin")
+
+    # average duration of flights from PDX and SEA 
+    by_origin.avg("air_time").show()
+
+# Grouping and Agrgegating 2 
+
+    => spark.agg()
+
+    # practice
+    
+    import pyspark.sql.functions as F
+
+    # group by month and dest 
+    by_month_dest = flights.groupBy("month","dest")
+
+    # avg dep_delay by month and dest 
+    by_month_dest.avg("dep_delay").show()
+
+    # std of dep_delay
+    by_month_dest.agg(F.stddev("dep_delay")).show()
+
+# joining 2 
+
+    => spark.join(df, on=, how="outer")
+
+    # rename the faa column 
+    airports = airports.withColumnRenamed("faa","dest")
+
+    # join the Df 
+    flights_with_airports = flights.join(airports,on="dest",how="leftouter")
+
+    

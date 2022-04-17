@@ -1,0 +1,56 @@
+
+
+Scheduling 
+
+1. can apply to any task listed in data processing 
+
+2. Scheduling is the glue of the system 
+
+3. holds each piece and organize how they work together 
+
+4. runs task in a speicifc order 
+    resolves all dependencies
+
+
+Scheduling Type
+
+1. Manually
+
+    => manually update the employee table
+
+2. Automotically run at a specific time 
+
+    => update the employee table at 6am 
+
+3. Automatically run if a specific condition is met
+
+    1. sensor scheduling
+        => update the department tables
+            if a new employee was added
+
+
+Batches and streams 
+
+Batches 
+    - group records at intervals 
+        => songs uploaded by artists
+    - often cheaper 
+        => employee table 
+        => revenue table
+
+Streams
+    - send individual records right away 
+        => New users signing in 
+        => : online vs offline listening
+
+
+Summary 
+
+- What scheudling is 
+- different ways to set it up
+- difference between batch vs stream 
+- how scheduling implemented
+
+==>
+
+Airflow, Luigi

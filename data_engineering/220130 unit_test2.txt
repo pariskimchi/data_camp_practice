@@ -1,0 +1,118 @@
+
+
+# Unit test serve as documentation 
+
+# Test module: test_row_to_list.py 
+
+
+import pytest 
+import row_to_list
+
+
+def test_for_clean_row():
+    assert row_to_list("2,081\t314,492\n") == \
+        ["2,081","314,942"]
+
+
+# reading unit test 
+
+=> !cat test_row_to_list.py
+
+
+# message 
+
+assert boo+lean_expression, message 
+
+assert 1==2, "One is not equal to two!"
+
+    => message 나옴 
+
+
+assert 1 == 1, "This will not be printed since assertion passes"
+
+
+
+# adding a mssage to a unit test 
+
+def test_for_missing_area_with_message():
+    
+    actual = row_to_list("\t293,410\n")
+    expected = None
+    message = ("row_to_list( '\t293,410\n')")
+                "returned {0} instead "
+                "of {1}".format(actual, expected)
+
+    assert actual is expected, message
+
+
+# float error 
+
+# example 1
+ 
+0.1+0.1+0.1 == 0.3 이 에러가 나온다 
+
+왜냐면 0.3000000004 가 맞으므로 
+
+
+# 이렇게 하면 안된다 
+
+assert 0.1+0.1+0.1 == 0.3. "message"
+
+# pytest.approx() 이걸 사용해야 된다 
+
+assert 0.1+0.1+0.1 == pytest.approx(0.3)
+
+# example 
+
+assert np.array([0.1+0.1,0.1+0.1+0.1]) == pytest.approx(np.array([0.2,0.3]))
+
+# Multiple assertions 
+
+def test_on_string_with_one_comma():
+    
+    return_value =convert_to_int("2,081")
+    assert isinstance(return_value, int)
+    assert return_value == 2081
+
+
+# Practice 
+
+import numpy as np 
+import pytest 
+from as_numpy import get_data_as_numpy_array
+
+def test_on_clean_file():
+    expected = np.array([[2081.0, 314942.0],
+                       [1059.0, 186606.0],
+  					   [1148.0, 206186.0]
+                       ]
+                      )
+
+
+    actual = get_data_as_numpy_array("example_clean_data.txt",num_columns=2)
+    message = "Expected return value:{0}, \
+        Actual return value: {1}".format(expected, actual)
+
+    # complete the assert statement 
+    assert actual == pytest.approx(expected), message
+
+
+def test_on_six_rows():
+    example_argument = np.array([...])
+
+    # fill in with training array's expected 
+    expected_trainin
+
+
+
+# testing for exception instead of return values 
+
+def test_valueerror_on_one_dimensional_argument():
+    example_argument = np.array([1,2,3,4,5,56])
+    with pytest.raises(ValueError) as exception_info:
+        split_into_training_and_testing_sets(example_argument)
+
+    # Check if ValueError contains correct message 
+    assert exception_info.match("Argument data arraya
+        must be two dimensional.")
+    

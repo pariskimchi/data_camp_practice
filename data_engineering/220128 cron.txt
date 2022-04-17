@@ -1,0 +1,39 @@
+
+# Cron??
+
+=> time-based job-scheduler 
+=> MacOs, unix 
+=> used to automate jobs like maintenance, bash scripts, python jobs 
+
+
+
+# Add a job to cron tab
+
+echo "* * * * * python create_model.py" | crontab
+
+# check if the job is properly scheduled:
+crontab -l 
+
+# Add as job that runs every_minute on the minute to cron tab 
+
+echo "* * * * * python hello_world.py" | crontab
+
+
+
+# Scehdule step 
+
+# Preview both Python script and requirements text file 
+cat create_model.py 
+cat requirements.txt
+
+# pip install python dependencies in requirements file 
+pip install -r requirements.txt
+
+# Run python script on command line 
+python create_model.py 
+
+# Add CRON job that runs create_model.py every minute 
+echo "* * * * * python create_model.py" |  crontab
+
+# Verify that the CRON job has been scheuled via crontab
+crontab -l

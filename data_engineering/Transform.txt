@@ -1,0 +1,56 @@
+
+
+kind of transformations 
+
+
+1. selection of attribute 
+2. Translation of code values 
+3. Data validation 
+4. Splitting columns into multiple columns 
+5. joining from multiple sources
+
+An example: split(pandas)
+
+
+customer_df 
+
+#split email column into 2 columns on the '@' symbol
+split_email = customer_df.email.str.split("@",expand=True)
+
+# At this point, split_email have 2 columns, 
+# one with @, and second after @
+
+# create 2 new columns using the resulting DataFrame 
+customer_df = customer_df.assign(
+    username=split_email[0],
+    domain=split_email[1],
+)
+
+Tranforming in PySpark 
+
+=> Extract data into PySpark 
+
+import pyspark.sql 
+
+# 스파크 세션 객체 생성
+spark = pyspark.sql.SparkSession.builder.getOrCreate()
+
+spark.read.jdbc("jdbc:postgresql://localhost:5432/pagila",
+    "customer",
+    properties={"user":"repl","password":"password"}
+    )
+
+An example: Join(PySpark)
+
+customer_df
+ratings_df
+
+# Groupby ratings 
+ratings_per_customer = ratings_df.groupBy("customer_id").mean("rating")
+
+# Join on customer id
+
+customer_df.join(
+    ratings_per_customer,
+    customer_df.customer_id == ratings_per_customer.customer_id
+)

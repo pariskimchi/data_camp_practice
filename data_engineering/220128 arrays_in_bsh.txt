@@ -1,0 +1,72 @@
+
+
+# Creating an array in Bash 
+
+# 1. Declare without adding elements 
+
+declare -a my_first_array
+
+# 2. create and add elements at the same time 
+my_first_array = (1 2 3)
+
+
+
+
+# Manipulating array elements 
+
+=> array[@]:N:M
+
+#example:
+my_first_array = (15 20 300 42 23 2 4 33 54 67 66)
+
+N=> index
+M=> how many elements to return 
+
+echo ${my_first_array[@]:3:2}
+
+# Appending to arrays 
+array+=(elements)
+
+#example
+
+my_array = (300 42 23 2 4 33 54 67 66)
+my_array+=(10)
+echo ${my_array[@]}
+
+    => 마지막에 10이 append 되어서 
+    마지막에 10이 넣어진 상태로 출력됨
+
+#example:
+괄호 안에 append 안하고 그냥 10을 해버리면 
+
+my_array = (300 42 23 2 4 33 54 67 66)
+my_array +=10
+echo ${my_array[@]}
+
+    => 30010 42 23 2 4 33 54 67 66 
+        이렇게 출력됨
+
+# print out the array length 
+
+샵을 붙인다 
+echo ${#my_array[@]}
+
+
+# declare fisrt 
+declare -A city_details 
+
+# add elements
+city_details = ([city_name]="New York" [population]=140000000) 
+
+# index using key to return a value 
+
+echo ${city_details[city_name]}
+
+
+# same syntax:
+
+declare -A city_details=([city_name]="New York" [population]=14000000)
+
+# access to key 
+
+echo ${!city_details[@]}

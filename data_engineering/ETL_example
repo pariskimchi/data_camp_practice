@@ -1,0 +1,32 @@
+
+
+Extract 
+
+1. collecting data from google 
+2. Pulling the top 20 songs users have been 
+    listening 
+
+    => 일단 추출 구간이니까,  확실하게 
+        랭크 20위 안의 데이터들을 뽑아내는것도 
+        추출 구간
+
+Transform 
+
+1. Sorting a playlist song based on the date 
+    => 정렬은 data-preprocessing 
+
+2. Summarizing the yearly listening activity to 
+    how many hours they listened to music 
+    => 얼마나 들었는지 계산하는것도 
+        data-preprocessing 이지 
+
+Load 
+
+1. Writing all the followers of a user in table
+    => 일단 만들어진 테이블안에서 뽑아내는거 
+        load 
+
+2. saving the new order of playlist that was newly 
+    sorted 
+    => 새롭게 정렬된 플레이리스트를 저장하는건 
+        load

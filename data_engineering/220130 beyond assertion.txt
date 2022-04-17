@@ -1,0 +1,105 @@
+
+
+
+# Beyond assertion: setup and teardown 
+
+# The preprocessing function 
+
+def preprocess(raw_data_file_path, clean_data_file_path):
+    .....
+
+    
+
+ raw files =>
+row_to_list() => convert_to_int() => clean 
+
+# preprocess() 
+    => modifying environment by creating a clean data file 
+
+
+# example 
+def test_on_raw_data():
+    #setup: create the raw data file 
+    preprocess(raw_data_file_path,
+        clean_data_file_path)
+
+    with open(clean_data_file_path) as f:
+        lines = f.readlines()
+    first_line = lines[0]
+    assert first_line == "1801\t201411\n"
+    second_line = lines[1]
+    assert second_line == "2002\t333209\n"
+
+# The new workflow 
+
+setup => assert => teardown 
+
+# Fixture 
+
+import pytest 
+
+@pytest.fixture 
+def my_fixture():
+    # Do setup here 
+    yield data # use yield instead of return 
+
+    # Do teardown here 
+
+def test_something(my_fixture):
+    ....
+    data = my_fixture
+
+    .....
+
+
+# example 2
+ 
+#Fixture 
+
+@pytest.fixture 
+def raw_and_clean_data_file():
+    raw_data_file_path = "raw.txt"
+    clean_data_file_path = "clean.txt"
+    with open(raw_data_file_path, 'w') as f:
+        f.write("1,801\t201,411\n"
+                "1,767565,112\n")
+    
+    yield raw_data_file_path, clean_data_file_path
+
+    os.remove(raw_data_file_path)
+    os.remove(clean_data_file_path)
+
+
+# Test 
+
+import os 
+import pytest 
+
+def test_on_raw_data(raw_and_clean_data_file):
+    raw_path, clean_path = raw_and_clean_data_file
+    preprocess(raw_path, clean_path)
+    with open(clean_data_file_path) as f:
+        lines = f.readlines()
+    first_line = lines[0]
+    assert first_line == "1801\t201411\n"
+    second_line = lines[1]
+    assertsecond_line == "2002\t333209\n"
+    
+# tmpdir and fixture chaining 
+
+    1. setup of tmpdir()
+    2. setup of raw_and_clean_data_file()
+    3. test 
+    4. teardown of raw_and_clean_data_file()
+    5. teardown of tmpdir()
+
+    @pytest.fixture 
+    def raw_and_clean_data_file(tmpdir):
+        raw_data_file_path = tmpdir.join("raw.txt")
+        clean_data_file_path = tmpdir.join("clean.txt")
+        with open(raw_data_file_path,'w') as f:
+            f.write("...")
+        
+        yield raw_data_file_path, clean_data_file_path
+
+

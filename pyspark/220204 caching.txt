@@ -1,0 +1,188 @@
+
+
+# What is caching?
+
+    => store dataframe in memory or on disk 
+    => improve speed on later transformation/actions 
+    => reduces resource usage
+
+# Disadvantage of caching 
+    
+    => Very large data sets 
+        => not fin in memory 
+    => Local dist based caching 
+        => not performance improvement 
+    => cached object 
+        => not be available 
+
+
+# caching tips 
+
+    => cache only if you need it 
+    => try cach DataFrame 
+
+# Implementing caching 
+
+    => df.cache()
+
+    #syntax:
+    voter_df = spark.read.csv('voter_data.txt.gz')
+    voter_df.cache().count()
+
+    voter_df = voter_df.withColumn(
+        'ID', monotonically_increasing_id()
+    )
+    voter_df =voter_df.cache()
+    voter_df.show()
+
+    => df.is_cached
+
+    print(voter_df.iscached)
+        => True 
+
+    => df.unpersist()
+    
+    voter_df.unpersist()
+
+
+    # caching 
+        => more fast when re-using 
+
+
+# Improve import performance 
+
+    # Spark cluster
+        1. Driver process 
+        2. Worker process
+
+    # Schemas 
+        => well defined schema
+            => will improve import performance 
+        
+        => Avoids reading the data multiptle times 
+        => provides validation on import
+
+    # write out to parquet 
+    
+        df_csv = spark.read.csv('singlelargefile.csv')
+        df_csv.write.parquet('data.parquet')
+        df = spark.read.parquet('data.parquet')
+
+
+# practice: File import performance 
+
+    # import the full and split files into Dataframe 
+    full_df = spark.read.csv('departures_full.txt.gz')
+    split_df = spark.read.csv('departures_0*.txt.gz')
+
+# cluster configurations 
+
+    # Reading configuration setting 
+    spark.conf.get(<configuration name>)
+
+    # writing configuration setting 
+    spark.conf.set(<configuration name>)
+
+    # cluster Types 
+
+        -sigle node
+        -standalone
+        - Managed 
+            - YARN
+            - Mesos
+            - Kubernetes
+
+# Driver 
+    => Task assignment 
+    => Result consolidation 
+    => Shared data access 
+
+        => driver node should have double memeroy of the worker 
+        => Fast local storage helpful
+# Worker 
+    => Runs actual task 
+    => has all code, data and resources 
+
+        => More worker nodes better than larger worker 
+        => Test to find the balance
+        => Fast local storage extremely useful
+
+
+# Practice 
+
+    # name of the spark application instance 
+    app_name = spark.conf.get('spark.app.name')
+
+    # Driver TCP port 
+    driver_tcp_port = spark.conf.get('spark.driver.port')
+
+    # number of join partitions 
+    num_partitions = spark.conf.get('spark.sql.shuffle.partitions')
+
+# practice 2: Writing Spark configuration 
+
+    # store the number of partitions in variable 
+    before = departures_df.rdd.getNumPartitions()
+
+    # Configure spark to use 500 partitions 
+    spark.conf.set(
+        'spark.sql.shuffle.partitions',500
+    )
+
+    # Recreate the DataFrame using the departures data file 
+    departures_df = spark.read.csv('departures.txt.gz').distinct()
+
+    # compare number of partitions for each instance 
+
+    print(before)
+    print(departures_df.rdd.getNumPartitions())
+
+# Performance improvements 
+
+    # Explaining the Spark execution plan
+    
+    => df.explain()
+
+    voter_df = df.select(df['VOTER_NAME']).distinct()
+    voter_df.explain()
+
+
+    # What is shuffling?
+    
+        => hide complexity from the user 
+        => can be slow to complete 
+        => lower overall 
+        => necessary, try to minimize
+    
+    # how to limit shuffling?
+
+        => limit use of .repartition(num_partitions)
+            => use .coalesce(num_partitions)
+
+        => use care when calling .join()
+        => use .broadcast()
+    
+    # Broadcasting 
+
+        => provides a copy of an obj to each worker 
+        => prevents undue/ excess communication between nodes 
+        => speed up with .join() operation 
+
+        => .broadcast(<DataFrame>)
+
+        from pyspark.sql.functions import broadcast 
+        combined_df = df_1.join(broadcast(df_2))
+
+# Practice 3: Using broadcasting on Spark joins 
+
+    # steps:
+    => Broadcast the smaller DataFrame, 
+        the larger dataframe required the more times
+        to transfer to worker nodes 
+    => On small DataFrames, 
+        better skip broadcasting
+
+    왜 broadcasting.count() 가 더 빠를까?
+
+    이미 broadcasting 을 실행할때 count() 한번 해서 
+    그런가?

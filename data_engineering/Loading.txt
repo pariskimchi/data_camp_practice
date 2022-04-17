@@ -1,0 +1,32 @@
+
+
+
+An example: Redshift 
+
+# pandas .to_parquet() method 
+
+df.to_parquet("./s3://path/to/bucket/customer.parquet")
+
+# PySpark .write.parquet() method 
+
+df.write.parquet("./s3://path/to/bucket/customer.parquet")
+
+COPY customer 
+FROM 's3://path/to/bucket/customer.parquet'
+FORMAT as parquet 
+...
+
+
+# Load to postgresql
+
+pandas.to_sql()
+
+# transformation on data 
+
+recommendations = transform_find_recommendations(ratings_df)
+
+# load into postgresql database 
+recommendations.to_sql("recommendations",
+                        db_engine,
+                        schema="store",
+                        if_exists="replace")

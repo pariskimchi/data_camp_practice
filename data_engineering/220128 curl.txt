@@ -1,0 +1,39 @@
+curl?
+
+
+# Basic curl syntax:
+curl [option flags] [url]
+
+url = 'https://websitename.com/datafilename.txt
+
+
+# Save
+
+curl -O https://websitename.com/datafilename.txt
+
+=>
+
+curl -O renamedatafilename.txt https://websitename.com/datafilename.txt
+
+# downloading multiple file using Wildcards
+
+curl -O https://websitename.com/datafilename*.txt
+
+
+# downloading multiple files using globbing parser 
+
+curl -O https://websitename.com/datafilename[001-100].txt
+
+# downaloding every Nth file 
+
+curl -O https://websitename.com/datafilename[001-100:10].txt
+
+
+-L : Redirects the HTTP URL if 300 error code 
+
+-C : resumes a prefious file transfer 
+
+example:
+
+curl -L -O -C https://websitename.com/datafilename[001-100].txt
+

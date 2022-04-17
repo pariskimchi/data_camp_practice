@@ -1,0 +1,15 @@
+
+
+Processing: An example
+(spark)
+
+df = spark.read.parquet("users.parquet")
+
+outliers = df.filter(df["age"] > 100)
+
+print(outliers.count())
+
+
+Scheduling (airflow)
+- plan jobs with specific intervals 
+- resolve dependency requirements of jobs

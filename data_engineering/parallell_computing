@@ -1,0 +1,44 @@
+
+
+parallel computing
+
+- Memory
+- Processing Power
+
+
+Idea
+
+- split task into subtasks 
+- Distribute subtasks over several computers
+- work together to finish task
+
+
+make partition 
+    => 4등분으로 데이터 분할하는법
+<!-- multiprocessing.Pool -->
+
+from multiprocessing import Pool
+
+def take_mean_age(year_and_group):
+    year, group = year_and_group
+    return pd.DataFrame({
+        "Age":group["Age"].mean()
+    }, index=[year])
+
+<!-- 4번으로 나눠서 4번에 걸쳐서 분산처리 한다 -->
+with Pool(4) as p:
+    results = p.map(take_mean_age, athlete_events.groupby("Year))
+
+result_df = pd.concat(results)
+
+<!-- dask -->
+
+import dask.dataframe as dd 
+
+<!-- partition dataframe into 4 -->
+
+athlete_events_dask = dd.from_pandas(athlete_events,
+    npartitions=4)
+
+<!-- Run parallel computations on each partition -->
+result_df = athlete_events_dask.groupby('Year').Age.mean().compute()

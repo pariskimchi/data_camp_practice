@@ -1,0 +1,56 @@
+
+
+Data workflow 
+
+1. Data collection & Storage 
+2. Data Preparation 
+3. Exploration & Visualization 
+4. Experimentation & Prediction
+
+Data Engineers 
+
+deliver;
+
+1. the correct data 
+2. in the right form 
+3. to the right people 
+4. as efficiently as possible
+
+
+A data engineer's responsibilities 
+
+1. ingest data from different sources 
+2. opimize databases for analysis 
+3. remove corrupted data 
+4. develop, construct, test and maintain data architectures 
+
+
+Data engineers and big data 
+
+- Big data becomes the norm    
+    => 
+
+- Big data:
+    => have to think about 
+        "how to deal with it's size?"
+
+    => tradional methods don't work
+
+
+The five V's
+
+1. Volume(how much?)
+2. Variety(what kind?)
+3. velocity(how frequent?)
+4. veracity(how accurate?)
+5. value(how useful?)
+
+
+Data engineers vs data scientist 
+
+1. data collection & storage 
+
+
+
+data scientist 
+    => data preparation + exploration + experimetaion & prediction

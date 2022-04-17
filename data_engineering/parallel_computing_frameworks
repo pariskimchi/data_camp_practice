@@ -1,0 +1,56 @@
+
+
+Apache Hadoop(HDFS)
+
+=> distribution system
+
+
+
+MapReduce
+
+=> 파티션 분할하고 
+    => compute 
+
+
+Hive
+
+- runs on Hadoop
+- Hive SQL
+
+
+Hive: example
+
+SELECT year, AVG(age)
+FROM views.athlete_events
+GROUP BY year
+
+
+Spark
+
+
+RDD(resilient distributed datasets)
+
+스파크가 의존하는 데이터베이스
+- similar to list of tuples
+
+- transformation:
+    => .map()
+    => .filter()
+- Actions:
+    => .count()
+    => .first()
+
+PySpark 
+- Python interface to spark 
+- dataframe abstraction 
+- looks similiar to pandas
+
+
+Pyspark: example 
+
+# load the dataset into athlete_events_spark first 
+
+(athlete_events_spark
+    .groupBy('Year')
+    .mean('Age')
+    .show())

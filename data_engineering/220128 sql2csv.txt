@@ -1,0 +1,64 @@
+# sql2csv ??
+
+=> executes an SQL query on SQL database 
+
+=> outputs the result to a csv file 
+
+#syntax 
+
+sql2csv --db "sqlite:///SpotifyDatabase.db"\
+        --query "SELECT * FROm Spotify_popularity"\
+        > Spotify_popularity.csv
+
+# 1. Establishing database connection 
+
+--db: database connection string 
+SQLite: "sqlite:///.... .db"
+Postgres & MYSQL : "postgres:/// " or "mysql:///" "... .db"
+
+
+# csvsql: 
+
+=> applies SQL statements to one or more CSV files 
+=> creates an in-memory SQL database
+=> suitable for small to medium files only 
+
+쿼리문 실행 위주 
+
+# syntax:
+csvsql --query "SELECT * FROM Spotify_MusicAttribute LIMIT 1"\
+        Spotify_MusicAttribute.csv
+
+#syntax2:
+
+csvsql --query "SELECT * FROM Spotify_MusicAttribute LIMIT 1" \
+        data/Spotify_MusicAttribute.csv | csvlook
+
+# syntax3:
+
+csvsql --query "SELECT * FROM Spotify_MusicAttribute LIMIT 1" \
+        data/Spotify_MusicAttribute.csv > OneSongFile.csv
+
+# Join Syntax:
+
+csvsql --query "SELECT * FROM file_a INNER JOIN file_b"
+        file_a.csv file_b.csv
+
+
+# csvsql: insert
+=> Db에 csv파일 넣기 
+
+# syntax
+
+csvsql --db "sqlite:///SpotifyDatabse.db"\
+        --insert Spotify_MusicAttribute.csv
+
+# syntax2:
+
+csvsql --no-inference --no-constraints\
+        --db "sqlite:///SpotifyDatabse.db"\
+        --insert Spotify_MusicAttribute.csv
+
+
+
+

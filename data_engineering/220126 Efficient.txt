@@ -1,0 +1,44 @@
+Counting with loop
+
+# each pokemon's type 
+
+poke_types = ['Grass','Dark',']
+
+type_counts = {}
+
+for poke_type in poke_types:
+    if poke_type not in type_counts:
+        type_counts[poke_type] = 1
+    else:
+        type_counts[poke_type] += 1
+
+# collections.Counter()
+
+poke_types = ['grass','dark','fire','fire']
+
+from collections import Counter 
+
+type_counts = Counter(poke_types)
+print(type_counts)
+
+# combinations with loop 
+# 각각 요소의 조합
+poke_types = ['bug','fire','ghost','grass','water']
+combos = []
+
+for x in poke_types:
+    for y in poke_types:
+        if x == y:
+            continue
+        if ((x,y) not in combos) & ((y,x) not in combos):
+            combos.append((x,y))
+print(combos)
+
+# itertools.combinations()
+
+poke_types = ['bug','fire','ghost','grass','water']
+from itertools import combinations
+combos_obj = combinations(poke_types, 2)
+print(type(combos_obj))
+
+

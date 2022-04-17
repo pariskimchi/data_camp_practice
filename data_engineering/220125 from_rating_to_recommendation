@@ -1,0 +1,11 @@
+
+
+Recommendation techniques 
+
+1. Matrix factorization 
+    => 행렬로 했던거 funksvd 
+
+2. building recommendation engine with pyspark 
+    => pyspark 이용해서 추천 엔진 만들기 
+
+

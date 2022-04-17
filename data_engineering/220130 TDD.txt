@@ -1,0 +1,202 @@
+
+
+# TDD?
+
+    => Test Driven Development(TDD)
+
+
+# write unit tests before implementation!
+
+
+# ex, questions ?
+
+    1. normal arguements?
+    2. special arguments?
+    3. bad arguments?
+    4. return values?
+    5. Exceptions?
+
+
+# Step1: Write unit test and fix requirements 
+
+import pytest 
+
+def test_with_no_comma():
+    ...
+
+def test_with_one_comma():
+    ...
+
+def test_with_two_commas():
+    ....
+
+# step 2: Run test and watch if fail 
+    => !pytest ...py
+
+# step 3: Implement function and run tests again 
+    
+def convert_to_int():
+    ...
+
+=> !pytest ....py
+
+
+# Project Structure 
+
+
+src/
+    data/
+        __init__.py
+        preprocessing_helpers.py
+    features/
+        __init__.py
+        as_numpy.py
+    models/
+        __init__.py
+        train.py
+tests/
+    data/
+        __init__.py
+        Test_preprocessing_helpers
+    features/
+        __init__.py
+    models/
+        __init__.py
+
+
+# Clean separation 
+
+# Test module: Test_preprocessing_helpers.py 
+
+import pytest 
+from data.preprocessing_helpers import row_to_list, convert_to_int
+
+
+# use class 
+
+class TestRowToList(object):
+    def test_on_no_tab_no_missing_value(self):
+        ...
+    def test_on_two_tabs_no_missing_value(self):
+        ...
+
+class TestConvertToInt(object):
+    def test_with_no_comma(self):
+        ....
+    def test_with_one_comma(self):
+        ....
+
+
+
+# practice 1 
+
+import pytest 
+import numpy as np
+
+from models.train import split_into_training_and_testing_sets
+
+# Declare the test class 
+class TestSplitIntoTrainingAndTestingSets(object):
+    # Fill in with the correct mandatory argument 
+    def test_on_one_row(self):
+        test_argument = np.array([[1382.0, 34343.0]])
+        with pytest.raises(ValueError) as exc_info:
+            split_into_training_and_testing_sets(test_argument)
+
+        expected_error_msg = "Arguement data_arary must have at least 2 rows, it actually\
+            has just 1"
+        assert exc_info.match(expected_error_msg)
+
+
+# Mastering test execution 
+
+
+# Running all tests 
+
+    => cd tets 
+    => pytest 
+
+    # -x flag: stop after first failure 
+
+    => pytest -x
+
+# Node ID 
+
+    #Node Id of a test class:
+    
+    <path to test module>::<test class name>
+
+    # Node ID of an unit test:
+    
+    <path to test module>::<test class name>::<unit test name>
+
+
+# Running tests using Node ID
+
+    => pytest data/test_preprocessing_helpers.py::TestRowToList
+
+
+    # run the unit test test_on_one_tab_with_missing_value()
+
+    => pytest data/test_preprocessing_helpers.py::TestRowToList::test_on_one_tab_with_missing_value
+
+
+# -k option 
+
+    # run the test class TestSplitIntiTrainingAndTestingSets
+    => pytest -k "TestSplitIntoTrainingAndTestingSets"
+
+    => pytest -k "TestSplit"
+
+    => pytest -k "TestSplit and not test_on_one_row"
+
+
+
+# xfail : marking tests as "expected to fail "
+
+
+import pytest 
+
+class TestTrainModel(object):
+    @pytest.mark.xfail
+    def test_on_linear_data(self):
+        ....
+
+# skipif: skip tests conditionally
+
+class TestConvertToInt(object):
+    @pytest.mark.skipif(boolean_expression)
+    def test_with_no_comma(self):
+
+
+    @pytest.mark.skipif(sys.version_info > (2,7), reason="requires Python 2.7")
+    def test_with_no_comma(self):
+        .....
+
+# Showing reason in the test result report 
+    => pytest -r 
+
+# showing reason for skipping 
+    => pytest -rs
+
+# Optional reason argument to xfail 
+import pytest 
+
+class TestTrainModel(object):
+    @pytest.mark.xfail(reason=""using Tdd, train_model() is not implemented")
+    def test_on_linear_data(self):
+        ....
+
+# showing reason for xfail 
+    => pytest -rx
+
+
+# Practice failure mark 
+
+@pytest.mark.xfail(reason="Using TDD, model_test() has not yet been implemented")
+Class TestModelTest(object):
+    def test_on_linear_data(self):
+        test_input = np.array(np.random(1,1))
+        expected = 1.0
+        actual = model_test(test_input,2.0,1.0)
+        message = ""

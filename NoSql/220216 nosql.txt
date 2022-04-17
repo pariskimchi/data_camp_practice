@@ -1,0 +1,224 @@
+
+# Intro 
+
+    1. NoSQL vs relational database/ key-value 
+    2. Docuement database 
+    3. Column family database 
+    4. graph database 
+
+
+# 1. NoSQL vs relational base 
+
+    # relational base 
+        - tables/rows/columns 
+        - need schema/ complicate to change 
+        - slow queries when join 
+        - vertically scalable 
+            => more expansive 
+    # NoSQL 
+        - non-SQL 
+        - not only SQL 
+        - non-relational 
+        - no use table/row/columns 
+        -fast queries 
+        - horizontal scalable 
+
+# Advantages 
+    - key-value tuple 
+    - no defined schema/ type 
+    - basic operation 
+        - put
+            - insert new key-value
+            - update a value
+        - get 
+            - return 
+        - delete 
+    - fast read/write 
+    - scale horizontally 
+    - limitation 
+        => search by key 
+    - not complex queries 
+
+# when to use 
+
+    # 
+    key: userID 
+    value: userprofile/preferences 
+
+    # info is saved with one operation 
+    SET user:457:preferenes 
+    {"language":"en_US",
+    "color":"green"}
+
+    # retrieve 
+    GET user:457:preferences
+
+# Redis - 
+    => Remove Dictionary Server 
+    - fast in memory daata sturcture store
+
+    # Strings 
+    SET name Ann 
+
+    # Lists 
+    RPUSH my_numbers 1 2 3
+
+    # Sets 
+    SADD my_set 1 2 3
+
+    #Hashs 
+    HMSET user:123 name Ann surname Smith
+
+# Docuement database 
+
+    - Documents => rows 
+    - collections => tables 
+
+    # docuement 
+    - set of key-value pairs 
+    - keys: Strings 
+    - values:numbers,string,boolean,array or object 
+    - schemaless:
+    - format: JSON, BSON, yaml, xml
+    
+        => 꼭 똑같은 key를 이용하지 않아도 된다 
+    
+    # Advantages- flexibility 
+        => no need to predefine the schema 
+        - can vary over time 
+        - embedded documents avoid joins
+
+    # intuitive 
+        => natural way to work 
+        - json is human-readable 
+        - document map object in code 
+            => less code 
+            => simpler and faster development 
+        - easier for new developer 
+
+    # horizontally scalability 
+        => sharding 
+    # limitation- more responsibility 
+        => care about data in the application code 
+            => ex) check required email 
+        => care about redundant data 
+            => more duplicated data 
+
+# MongoDB 
+    => one of popular document database
+    => Binary JSON format
+    
+    # feature 
+    => MongoDB query Language(MQL)
+        db.users.find({"address.zipcode":"10245"})
+    
+    => index on any field 
+    => join in queries 
+    => sacle horizontally 
+    
+    # product 
+    
+        - MongoDB Compass:
+            => GUI
+        - MongoDB Atlas:
+            => cloud service 
+            => aws, GCP
+        - MongoDB Atlas Lake:
+            => query and analyze data 
+            =? AWS S3 and mongoDB Atlas 
+            => MQL 
+        - MongoDB chart 
+            => visualization of the data 
+
+# column family database 
+
+    => google BigTable 
+    - stroe data  
+        => group related 
+        - 
+    - wide column database 
+    - great when large volume
+
+    row key: unique id 
+
+    # advantage 
+        => row with column family 
+            => can different columsn 
+        => add new column to row when we need 
+        => avoid filling with default value 
+        => fast 
+        => designed to handle large volume of data 
+    
+    # limitation 
+        => no multi-row 
+        => no join support 
+        => no subqueries 
+        => need to define the queries
+            => ex) query change => change the column families 
+
+# Apache Cassandra 
+    => column family database 
+    
+    # feature 
+        - distributed across the node of the cluster 
+        - scale for horizontally by adding nodes 
+        - Cassandra Query Language (CQL)
+        - query data 
+        - similar syntax to SQL 
+        - table(column family), row, columns 
+    # difference CQL - SQL 
+        - no join 
+        - no foreign key 
+        - no subqueries 
+        - 
+
+# graph database?
+    - data - relationship with same importance 
+    - graph theory:
+        - branch of mathematics 
+        - studies graph for modeling the relationship 
+
+    # part of a graph 
+        - vertices/nodes 
+        - edges/link/arcs
+
+    # nodes 
+        => represent entities
+    # edges 
+        => connect the nodes 
+        => define relationships between nodes 
+    
+    # Advantages
+        - can change as application  
+        - no need to define the final structure 
+        - can add/delete nodes, properties and edges 
+
+        - no need to join 
+            => because time-consuming 
+        - edge 
+            => simpler and faster 
+        - easy representation 
+        - easy visualize 
+        - more difficult than other NoSQL 
+            => graphs are connected 
+            => need to be distributed 
+            across multiple machines 
+    
+    # Limitation 
+        => extremely large value 
+        => bad practice 
+        => use another database to store that info 
+
+        - significant change
+
+
+    # when to use graph database?
+
+        1. highly connected data 
+            ex) sns 
+            - user , relationship 
+            - post 
+            - like 
+    
+    # Neo4j graph platform 
+    

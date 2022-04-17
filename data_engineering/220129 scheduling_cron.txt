@@ -1,0 +1,47 @@
+
+
+# why schedule scripts?
+
+
+-crontab 
+-cronjobs
+-crontabs
+
+# Crontab - the driver of cronjobs 
+
+
+# Cronjob example 
+
+5 1 * * * bash myscript.sh 
+
+Minute star is 5 (5 minuetes past the hour)
+Hours star is 1 (after 1am )
+the Last three star are * => every day and month
+
+
+15 14 * * 7 bash myscript.sh
+
+15 minutes 
+14 hours 
+every day of month 
+every month of year 
+Last star is day 7 ( on Sundays)
+
+
+# comma 
+
+15,30,45 * * * * 
+    =>
+    run at 15, 30, 45 minutes 
+
+
+# slash => every X increment
+
+*/15 * * * *  
+    => runs every 15 minutes 
+
+# cronjob 
+
+1. crontab -e => edit cronjobs 
+2. create the cronjob:
+    30 1 * * * extract_data.sh

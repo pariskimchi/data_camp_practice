@@ -1,0 +1,98 @@
+
+
+
+syntax:
+
+if [ CONDITION] ; then 
+    # SOME CODE
+else 
+    # SOME OTHER CODE
+
+fi
+
+
+# example 
+
+x = "Queen"
+if [$x == "King"]; then 
+    echo "$x is a King!"
+else 
+    echo "$x is not a King!"
+fi
+
+# example 2
+
+x = 10 
+if (($x >5)); then 
+    echo "$x is more than 5!"
+fi
+
+# Arithmetic IF statements (option 2)
+
+-eq => 'equal to '
+-ne => 'not equal to '
+-lt => 'less than '
+-le => 'less than or equal to '
+-gt => 'greater than '
+-ge => 'greater than or equal to '
+
+# Example 
+
+x=10 
+if [$x -gt 5]; then 
+    echo "$x is more than 5 !"
+fi
+
+# other Bash conditional flags 
+
+-e => if the file exist 
+-s => if the file exists and has size greater than zeo 
+-r => if the file exists and readable 
+-w => if the file exists and writable
+
+# AND  OR
+
+&& => AND 
+
+|| => OR
+
+# multiple conditions
+
+x=10 
+if [$x -gt 5] && [$x -lt 11]; then 
+    echo "$x is more than 5 and less than 11!"
+fi
+
+x=10 
+if [[ %x -gt 5 && $x -lt 11]]; then 
+    echo "$x is more than 5 and less than 11!"
+fi
+
+
+
+# Practice bash 
+
+
+ls 
+    => bad_models good_modesl model_results script.sh 
+ls model_results/
+    => model_1.txt model_2.txt
+
+# script.sh
+
+# Extract Accuract from first ARGV element 
+
+accuracy = $(grep "Accuracy" $1 | sed 's/.* //')
+
+# conditionally move into good_models folder 
+if [$accuracy -ge 90]; then 
+    mv $1 good_models/
+fi 
+
+# conditionally move into bad_models folder 
+if [$accuracy -lt 90]; then 
+    mv $1 bad_models/
+fi
+
+# what to do??
+bash script.sh model_results/model_1.txt

@@ -1,0 +1,45 @@
+
+
+
+An example pipeline 
+
+csv =>(extract) Spark => (load)  SQL
+
+how to schedule??
+
+==> use "cron" scheduling tool
+
+DAGs (Directed Acyclic Graph)
+
+- set of nodes 
+- directed edges 
+- no cycles
+
+
+AirFlow: an example DAG
+
+start-cluster => ingest_customer_Data => 
+            => ingest_product_data
+
+
+Airflow: an example in code 
+
+#create the DAG object 
+dag = DAG(dag_id="example_dag",...,schedule_interval="0****")
+
+#define operations
+start_cluster = StartClusterOperator(task_id="start_cluster",dag=dag)
+ingest_customer_data = SparkJobOperator(
+    task_id="ingest_customer_data", dag=dag
+)
+ingest_product_data = SparkJobOperator(
+    task_id="ingest_product_data",dag=dag
+)
+enrich_customer_data = PythonOperator(
+    task_id="enrich_customer_data",....,dag=dag
+)
+
+# Set up dependency flow 
+start_cluster.set_downstream(ingest_customer_data)
+ingest_customer_data.set_downstream(enrich_customer_data)
+ingest_product_data.set_downstream(enrich_customer_data)

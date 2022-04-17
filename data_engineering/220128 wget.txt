@@ -1,0 +1,48 @@
+wget?
+
+
+=> World Wide Web and get 
+
+=> Linux
+=> used to download data from http and FTP
+
+=> better than curl at downloading multiple files 
+
+# check if wget is installed 
+
+=> which wget 
+
+
+# Basic Wget syntax 
+
+wget [option flags] [URL]
+
+-b: Go to background immediately 
+
+-q: Turn off the Wget output 
+
+-c: Resume broken download 
+
+example:
+
+wget -bqc https://websitename.com/datafilename.txt
+
+
+# downloading from the url locations stored within the file 
+wget -i url_list.txt
+
+# setting when download large file
+
+wget --limit-rate={rate}k {file_location}
+
+example:
+
+wget --limit-rate=200k -i url_list.txt
+
+# setting download for small files 
+
+wget --wait={seconds} {file_location}
+
+# example:
+
+wget --wait=2.5 -i url_list.txt

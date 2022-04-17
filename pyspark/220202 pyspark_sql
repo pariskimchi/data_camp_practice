@@ -1,0 +1,25 @@
+
+
+# Executing SQL queries 
+
+    => SparkSession.sql()
+
+        => take SQL , argument 
+        => return result of df 
+
+
+    => df.createOrReplaceTempView("table1")
+
+    df2 = spark.sql(
+        "SELECT field1, field2 FROM table1"
+    )
+    df2.collect()
+
+# SQL query to extract data 
+
+    test_df.createOrReplaceTempView("test_table")
+
+    query = "SElect product_id from test_table"
+
+    test_product_df = spark.sql(query)
+    test_product_df.show(5)

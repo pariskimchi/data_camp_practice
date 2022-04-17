@@ -1,0 +1,54 @@
+
+
+
+
+
+# Raw data to clean data 
+
+from data.preprocessing_helpers import preprocess 
+from features.as_numpy import get_data_as_numpy_array
+from models.train import (
+    split_into_training_and_testing_sets
+)
+
+
+# preprocessing
+preprocess("data/raw/housing_data.txt",
+            "data/clean/clean_housing_data.txt"
+            )
+
+# 
+data = get_data_as_numpy_array(
+    "data/clean/clean_housing_data.txt",2
+)
+
+training_set, testing_set = (
+    split_into_training_and_testing_sets(data)
+)
+
+
+# The LR model 
+
+from scipy.stats import linregress 
+
+def train_model(training_set):
+    slope, intercept, _, _, _ = linregress(training_set[:,0],training_set[:,1])
+
+    return slope, intercept
+
+# Trick 1: Use dataset where return value is known 
+
+import pytest 
+import numpy as np
+from models.train import train_model 
+
+def test_on_linear_data():
+    test_argument = np.array([[...]])
+
+    expected_slope = 2.0 
+    expected_intercept = 1.0
+    slope, intercept = train_model(test_argument)
+
+     # test 
+     assert slope == pytest.approx(expected_slop)
+     assert intercept == pytest.approx(expected_intercept)

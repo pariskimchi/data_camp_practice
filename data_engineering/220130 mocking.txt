@@ -1,0 +1,44 @@
+
+
+# Mocking: Testing functions independently of
+    dependencies 
+
+
+    pytest-mock
+        => pip install pytest-mock 
+    unittest.mock 
+
+# MagicMock() and mocker.patch()
+
+
+    raw file => uniitest.mock.MagicMock()
+        => convert_to_int() => clean 
+
+# example 1 
+
+def test_on_raw_data(raw_and_clean_data_file, 
+    mocker,):
+    raw_path, clean_path = raw_and_clean_data_file
+    row_to_list_mock = mocker.patch(
+        "data.preprocessing_helpers.row_to_list",
+        side_effect = row_to_list_bug_free
+    )
+    preprocess(raw_path, clean_path)
+    assert row_to_list_mock.call_args_list == [
+        call("1,801\t201,411\n"),
+    ]
+
+
+def row_to_list_bug_free(row):
+    return_values = {
+        "1,801\t201,411\n":["1,801","201,411"]
+    }
+
+    return return_values[row]
+
+# cehcking the arguments 
+row_to_list_mock.call_args_list
+
+
+# run 
+    => pytest -k "TestPreprocess"

@@ -1,0 +1,321 @@
+
+
+# data cleaning 
+
+    - reformatting or replacing text 
+    - performing calculation 
+    - removing garbage 
+
+    # why perform data cleaning with spark?
+
+    - Performance 
+    - Organizing data flow 
+
+    # advantage 
+    - scalable 
+    - powerful framework for data handling 
+
+
+# example spark schema 
+
+import pyspark.sql.types 
+peopleSchema = StructType([
+    # define the name field 
+    StructField('name', StringType(), True),
+    # Add the age field 
+    StructField('age', IntegerType(), True),
+    # Add the city field 
+    StructField('city', StringType(), True)
+])
+
+# read csv file containing data 
+    => 
+    people_df = spark.read.format('csv').load(
+        name='rawdata.csv', schema=peopleSchema
+    )
+
+# Immutability and Lazy Processing
+
+     # Immutability
+        => define once 
+        => unable to be directly modified 
+        => re-created if reassigned 
+        => able to be shared 
+
+    # example:
+    voter_df = spark.read.csv('voterdata.csv')
+
+    # making changes 
+    voter_df = voter_df.withColumn(
+        'fullyear',voter_df.year+2000
+    )
+    voter_df = voter_df.drop(voter_df.year)
+
+
+    # Lazy Processing 
+        => transformation 
+        => actions 
+        => allows efficient planning 
+
+        voter_df = voter_df.withColumn(
+            'fullyear', voter_df.year+2000
+        )
+        voter_df = voter_df.drop(voter_df.year)
+
+        voter_df.count()
+
+
+# Understanding Parquet 
+
+    # difficulties with CSV files 
+
+    => no defined schema 
+    => requires special handling 
+    => Encoding format limited 
+
+     #Spark and CSV files 
+     
+     => slow to parse 
+     => cannot be filtered 
+     => requires redefining schema
+
+     # The Parquet Format 
+
+     => columnar data format 
+     => supported in spark and data processing framework 
+     => 
+
+# working with Parquet 
+
+    # reading parquet files
+
+    df = spark.read.format('parquet').load('filename.parquet')
+
+    df = spark.read.parquet('filename.parquet')
+
+    # writing Parquet files 
+    
+    df.write.format('parquet').save('filename.parquet')
+
+    df.write.parquet('filename.parquet')
+
+# Parquet and SQL 
+
+    filght_df = spark.read.parquet('filghts.parquet')
+
+    flight_df.createOrReplaceTempView('flights')
+
+    short_flights_df = spark.sql(query)
+
+
+# Dataframe refresher 
+
+    => row+ columns 
+    => immutable 
+    => use various transformation operation to modify data 
+
+    # syntax:
+    voter_df.filter(voter_df.name.like('M%'))
+
+    # return name and position only 
+    voters = voter_df.select('name','position')
+
+# Common DataFrame transformations 
+
+    # filter / where 
+    voter_df.filter(voter_df.date >)
+    voter_df.where(...)
+
+    # select 
+    voter_df.select(voter_df.name)
+
+    # withColumn
+    voter_df.withColumn('year',voter_df.date.year)
+
+    # drop 
+    voter_df.drop('unused_column')
+
+# Filtering data 
+    
+    => removing nulls 
+    => remove odd entries 
+    => split data 
+    => negate with ~ 
+
+    # syntax 
+    voter_df.filter(voter_df['name'].isNotNull())
+    voter_df.filter(voter_df.date.year>1800)
+    voter_df.where(voter_df['_c0'].contains('VOTE'))
+    voter_df.where(~ voter_df._c1.isNull())
+
+# Column string transformations 
+
+import pyspark.sql.functions  as F 
+
+# apply per column  as transformations 
+voter_df.withColumn('upper',F.upper('name'))
+
+# Can create columns 
+voter_df.withColumn('splits', F.split('name',' '))
+
+# Can cast to other types 
+voter_df.withColumn('year', voter_df['_c4'].cast(IntegerType()))
+
+
+# ArrayType() column function 
+
+    .size(<column>)
+        => return length of arrayType()
+    .getItem(<index<)
+        => index of list column
+
+
+# practice  
+
+     # show the distinct VOTER_NAME entries 
+     voter_df.select('VOTER_NAME').distinct().show(
+         40, truncate=False
+     )
+
+     # filter voter_df wherer the VOTER_NAME is 1-20
+     char in length 
+     voter_df = voter_df.filter(
+         'length(VOTER_NAME) > 0 and length(VOTER_NAME) <20'
+     )
+
+     # filter out voter_df where the VOTER_NAME
+        contains an _ 
+    voter_df = voter_df.filter(
+        ~ F.col('VOTER_NAME').contains('_')
+    )
+
+    # show the distinct VOTER_NAME entries again 
+    voter_df.select('VOTER_NAME').distinct().show(
+        40, truncate=False
+    )
+    
+# conditional dataFrame column operations 
+
+    => .when()
+    => otherwise()
+
+    # .when(<if condition>, <then x>)
+
+    df.select(
+        df.Name, df.Age, F.when(df.Age >= 18, 'Adult')
+    )
+
+    # .when() multiple 
+    df.select(df.Name, df.Age,
+                .when(df.Age >= 18, "Adult")
+                .when(df.Age < 18, "Minor")
+                )
+
+    # .otherwise() => like else 
+
+    df.select(df.Name, df.Age,
+                .when(df.Age >=18, "Adult") 
+                .otherwise("Minor")
+                )
+
+
+# practice 
+
+    # add a column to voter_df for any
+    voter_df = voter_df.withColumn(
+        'random_val',
+        when(voter_df.TITLE == 'Councilmember', F.rand())
+    )
+
+    # show 
+    voter_df.show()
+
+
+# practice 4
+
+    # add columne 
+    voter_df = voter_df.withColumn(
+        'random_val',
+        when(voter_df.TITLE == 'Councilmember',F.rand())
+        .when(voter_df.TITLE == 'Mayor',2)
+        .otherwise(0)
+    )
+    # show 
+    voter_df.show()
+
+    # use .filter() with random_val 
+    voter_df.filter(voter_df.random_val ==0).show()
+
+
+# User defined functions 
+    => UDF
+
+    import pyspark.sql.functions.udf
+
+    # define a python method 
+
+        def reverseString(mystr):
+            return mystr[::-1]
+    => 여기서 define
+    udfReverseString = udf(reverseString, StringType())
+                        함수, args
+
+    # use with spark 
+    user_df = user_df.withColumn(
+        'ReverseName',udfReverseString(user_df.Name)
+    )
+    # argument-less example 
+        
+        def sortingCap():
+            return random.choice(['G','H','R','S'])
+        # define function 
+        udfSortingCap = udf(sortingCap, StringType())
+        # import 
+        user_df = user_df.withColumn('class',udfSortingCap())
+
+# practice 4 
+
+    def getFirstAndMiddle(names):
+        return ' '.join(names)
+
+    #define the method as a UDF 
+    udfFirstAndMiddle = F.udf(
+        getFirstAndMiddle, StringType()
+    )
+    # create a new column using UDF 
+    voter_df = voter_df.withColumn(
+        'first_and_middle_name', udfFirstAndMiddle(voter_df.splits)
+    )
+
+# Partitioning and lazy processing 
+
+    # Partitioning 
+
+
+    # Lazy Processing 
+
+         # transformations are lazy 
+         => withColumn()
+         => select()
+
+         # action 
+         => .count()
+         => .write()
+
+# practice 5 
+
+    # select all the unique council voters
+    voter_df = df.select(df["VOTER NAME"]).distinct()
+
+    # count the row 
+    print(voter_df.count())
+
+    # add a ROW_ID 
+    voter_df = voter_df.withColumn(
+        'ROW_ID',f.monotonically_increasing_id()
+    )
+
+    # show the row with 10 highest ids 
+    voter_df.orderBy(voter_df.ROW_ID.desc()).show(10)
+
+

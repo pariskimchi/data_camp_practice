@@ -1,0 +1,108 @@
+
+
+# SparkSession 
+    => Entry point for dataframe api 
+
+    - sparkContext 
+        => main entry point for creating RDD 
+    - sparkSesssion 
+        => privide single point of entry 
+            to interact with spark df 
+    - sparkSession 
+        => create Dataframe , register df, 
+            execute sql query 
+    - sparkSession 
+        => pyspark as spark
+
+
+# Creating dataframe in pyspark 
+
+    1. From existing RDD 
+        => use sparkSession.createDataFrame()
+
+    2. from various data sources(csv, json, txt)
+        => sparkSession.read()
+
+    
+# example: creating df from RDD 
+
+iphones_RDD = sc.parallelize([
+    ...
+])
+
+names = ['model','year','height','wiehg't,'width]
+
+iphones_df = spark.createDataFrame(iphones_RDD, schema=names)
+
+# example 2: 
+
+df_csv = spark.read.csv("people.csv",header=True,
+            inferschema=True)
+
+df_json = spark.read.json(
+    "people.json",header=True, inferSchema=True
+)
+
+df_txt= spark.read.txt(
+    "people.txt",header=True, inferSchema=True
+)
+
+
+# Dataframe operators in PySpark 
+
+-Dataframe operations:
+    transformations and Actions 
+
+- dataframe transformations:
+    => select(), filter(), groupby(), orderby(), 
+        dropDuplicates(), withColumnRenamed()
+
+- dataframe actions 
+    => printSchema()
+    => head(), 
+    => show(), 
+    => count()
+    => describe()
+
+# select(), show() operations 
+
+    df_id_age = test.select('Age')
+        => subset columns 
+
+    df_id_age.show(3)
+
+# filter(), show()
+
+new_df_age21 = new_df.filter(new_df.Age > 21)
+new_df_age21.show(3)
+
+# groupby() , count()
+test_df_age_group = test_df.groupby('Age')
+test_df_age_group.count().show(3)
+
+# orderby() transform
+test_df_age_.count().orderBy('Age').show(3)
+
+# dropDuplicates()
+
+test_df_no_dup = test_df.select(
+    'User_ID','Gender','Age'
+).dropDuplicates()
+test_df_no_dup.count()
+
+# withColumnRenamed() transformations
+test_df_sex = test_df.withColumnRenamed(
+    'Gender','Sex'
+)
+
+# printSchema()
+    => type of columns 
+
+test_df.printSchema()
+
+# columns 
+test_df.columns
+
+# describe()
+
+

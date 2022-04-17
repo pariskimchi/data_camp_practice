@@ -1,0 +1,82 @@
+
+
+# complex IF statement 
+
+
+# example 
+
+if grep -q 'sydney' $1; then 
+    mv $1 sydney/
+fi 
+
+if grep -q 'melbourne|brisbane' $1; then 
+    rm $1
+fi 
+
+if grep -q 'canberra' $1; then 
+    mv $1 "IMPORTANT_$1"
+fi
+
+# Case statemnt build
+
+case 'STRINGVAR' in 
+    PATTERN1)
+    COMMAND1;;
+    PATTERN2)
+    COMMAND2;;
+    *)
+    DEFAULT COMMAND;;
+esac # finishing word
+
+# New CASE statement 
+
+case $(cat $1) in 
+    *sydney*) # PATTERN1
+    mv $1 sydney/ ;; # command 1
+    *melbourne*|*brisbane*) # PATTERN2
+    rm $1 ;; # command 2
+    *canberra*) # pattern 3
+    mv $1 "IMPORTANT_$1" ;; # command3
+    *) # pattern when no found
+    echo "No cities found";;
+esac # finall esc
+
+# practice 1 
+
+# Create a CASE statement matching the first ARGV
+
+case $1 in 
+    #Match on all weekdays
+    *Monday*|*Tuesday*|*Wednesday*|*Thursday*|*Friday*)
+    #command weekdays 
+    echo "It is a weekday!";;
+    # MAtch on all weekend 
+    *Saturday*|*Sunday*)
+    # command weekend 
+    echo "It is a weekend!";;
+    # CREate a default command 
+    *)
+    echo "Not a day!";;
+esac
+
+
+# practice 2 
+
+# use a FOR loop for each file in model_out /
+
+for file in model_out/*
+do 
+    # create a case statement for each file 
+    case $(cat $file) in 
+        # Match on tree and non-tree models 
+        *"Random Forest"*|*GBM*|*XGBoost*)
+        # command 
+        mv $file tree_models/ ;;
+        # other condition 
+        *KNN*|*Logistic*)
+        rm $file ;;
+        # Create a default 
+        *)
+        echo "unknown model in $file" ;;
+    esac
+done

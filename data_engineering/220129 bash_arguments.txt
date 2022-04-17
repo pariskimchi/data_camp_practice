@@ -1,0 +1,80 @@
+
+
+# Arguements in Bash 
+
+
+$@ + $* => all the arguments in ARGV
+
+$# => give the length of arguments
+
+
+
+# local 
+
+
+# example 
+
+function print_filename  {
+    local first_filename = $1
+}
+
+print_filename "LOTR.txt" "model.txt"
+echo $ first_filename
+
+
+    => 하면 아무것도 안나옴 
+    => 왜냐면 local 은 function 안에서만 작용 
+
+
+# Returning correctly 
+
+function convert_temp {
+    echo $(echo "scale=2; ($1 -32)*5 / 9" |  bc)
+}
+
+converted = $(convert_temp 30)
+echo "30F in celsius in $ converted C"
+
+    => 잘 적용 되서 나옴
+
+
+# practice 
+
+# Create a function 
+
+function return_percentage() {
+
+    #calculate the percentage using bc
+    percent = $(echo "scale=2; 100*$1/$2"|bc)
+
+    # Return the calculated percentage 
+    echo $percent
+}
+
+# call the function with 456 and 632 and echo the result 
+return_test = $(return_percentage 456 632)
+echo "456 out of 632 as a percent is $return_test%"
+
+
+# Practice 2 
+
+
+# Create a function with a local base variable 
+
+function sum_array()  {
+    local sum = 0 
+
+    # Loop through, adding to base variable 
+    for number in "$@"
+    do 
+        sum = $(echo "$sum + $number"|bc)
+    done
+
+    # echo back the result 
+    echo $sum
+    }
+# call function with array 
+test_array = (14 12 23.5 16 19.34)
+total = $(sum_array "${test_array[@]}")
+
+echo "The total sum of the test array is $total"

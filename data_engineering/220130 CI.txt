@@ -1,0 +1,43 @@
+
+# CI ?
+
+    => continuous integration (CI)
+
+
+# Step 1 : Create a configuration file 
+
+repository root 
+    /src 
+    /tests
+
+    # contents of .travis.yml
+    language: python 
+    python: 
+        -"3.6"
+    install:
+        -pip install -e 
+    script:
+        -pytest tests
+
+# Step 3: Install the Travis CI app
+
+
+
+# Code Average 
+
+# step 1: modify the travis CI
+
+# file: .travis.yml 
+
+    language: python 
+    python: 
+        - "3.6"
+    install:
+        - pip install -e 
+        - pip install pytest-cov codecov
+    script:
+        -pytest --cov=src tests
+    after_success:
+        - codecov
+
+# step2: install Codecov

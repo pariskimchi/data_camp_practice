@@ -1,0 +1,69 @@
+
+
+row_to_list(row)
+
+
+row_to_list("2,081\t314,942\n")
+=> ["2,081","314,942"]
+
+row_to_list("\t293,410\n")
+    => None
+
+row_to_list("1,463238,765\n")
+    => None
+
+
+# Python unit testing libraries 
+
+
+- pytest 
+- unittest 
+- noseetests 
+- doctest 
+
+# Step 1 
+
+    1. create a .py 
+    2. test_ 
+    3. => test module 
+
+# step 2. 
+
+    1. test_row_to_list.py 
+
+        => import pytest 
+        => import row_to_list
+
+        def test_for_clean_row():
+            assert row_to_list("2,081\t314,942\n") == \
+                ["2,081","314,942"]
+
+        def test_for_missing_area():
+            assert row_to_list("\t293,410\n") is None
+
+
+# Running unit test 
+
+    => pytest test_row_to_list.py
+
+
+# Unit tests for functino 
+
+# test result report 
+
+    => !pytest test_row_to_list.py
+
+
+# Section 1. general info 
+
+# Section 2. Test result 
+
+    => F => failure => AssertionError
+
+    => . => Passed 
+
+# Section 3. Information on failed test 
+
+
+
+

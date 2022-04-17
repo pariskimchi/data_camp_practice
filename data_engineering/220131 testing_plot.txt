@@ -1,0 +1,83 @@
+
+# structure 
+
+data/
+src/
+    data/
+    feature/
+    models/
+    visualization/
+        __init__.py
+        __plots.py
+        +++ baseline
+
+tests/
+
+
+# plots.py 
+def get_plot_for_best_fit_line(slope,intercept,
+            x_array, y_array, title):
+    .....
+
+
+# syntax:
+
+from visualization import get_plot_for_best_fit_line 
+
+#preprocessing 
+
+preprocess(...)
+data = get_data_as_numpy_array(..)
+training_set, testing_set = (
+    split_into_training_and_testing_sets
+)
+slope,intercept = train_model(training_set)
+
+# trainig plot
+get_plot_for_best_fit_line(slope, intercept,
+        training_set[:,0], training_set[:,1],
+        "Training")
+
+# Testing plot
+get_plot_for_best_fit_line(slope, intercept,
+    testing_set[:,0], testing_set[:,1],"testing")
+
+# visualize 
+matplotlib.figure.Figure()
+
+
+# step 
+    1. decide on test arguments 
+    2. call plotting function on test arguments 
+    3. Convert Figure() to PNG image 
+    4. Image look OK?
+    5. Store image as baseline image 
+    6. If no, => fix plotting function 
+
+
+
+# example test 
+
+import pytest 
+import numpy as np
+from visualization import get_plot_for_best_fit_line
+
+@pytest.mark.mpl_image_compare # comparison 
+def test_plot_for_linear_data():
+    
+    slope = 2.0
+    intercept = 1.0
+    x_array = np.array([1.0,2.0,3.0])
+    y_array = np.array([3.0,5.0,7.0])
+    title = "test plot for linear data"
+    return get_plot_for_best_fit_line(slope, intercept, x_array, y_array, title)
+
+
+# generating the baseline image 
+
+    => !pytest -k "test_plot_for_linear_data"
+        --mpl-generate-path
+        visualization/baseline
+
+# run the test 
+    => !pytest -k "test_plot_for_linear_data" --mpl
